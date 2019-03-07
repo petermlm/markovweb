@@ -1,6 +1,6 @@
 <template>
   <div id="Markov">
-    <h1>Markov</h1>
+    <h1 id="title">Markov</h1>
     <form
       id="markov-form"
       @submit.prevent="submitMarkov"
@@ -8,25 +8,39 @@
       method="post"
     >
       <md-field>
-        <label>Textarea</label>
-        <md-textarea v-model="input" md-counter="80"></md-textarea>
+        <md-textarea v-model="input" maxlength="5000"></md-textarea>
       </md-field>
 
-      <md-button type="submit" class="md-raised">Submit</md-button>
+      <div id="markov-form-buttons">
+        <md-button class="md-raised" v-if="output.length" v-on:click="clearMarkov">Clear</md-button>
+        <md-button type="submit" class="md-raised md-primary">Submit</md-button>
+      </div>
     </form>
 
-    <md-table v-model="output">
+    <md-table id="output-table" v-model="output" v-if="output.length">
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Output">{{ item.text }}</md-table-cell>
-        <md-table-cell md-label="Copy">Copy</md-table-cell>
+        <md-table-cell class="output-timestamp" md-label="Timestamp">{{ item.timestamp }}</md-table-cell>
+        <md-table-cell md-label="Generated Text">{{ item.text }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <style scoped>
-#Markov {
-  width: 75%;
+#title {
+  text-align: center;
+}
+
+#markov-form-buttons {
+  text-align: right;
+}
+
+#output-table {
+  margin-top: 26px;
+}
+
+.output-timestamp {
+  width: 180px;
 }
 </style>
 
@@ -36,21 +50,11 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 import axios from 'axios'
+import moment from 'moment'
 
 Vue.use(VueMaterial)
 
 let MarkovUrl = 'localhost:5000'
-
-function Request (text, assign) {
-  assign('fdsa')
-  axios.post(MarkovUrl, {'text': text})
-    .then(response => {
-      assign(response['text'])
-    })
-    .catch(e => {
-      this.errors.push(e)
-    })
-}
 
 export default {
   name: 'Markov',
@@ -58,16 +62,60 @@ export default {
   data () {
     return {
       input: '',
-      output: [{'text': 'ai'}, {'text': 'ui'}],
+      output: [],
+    }
+  },
+
+  mounted () {
+    if(localStorage.output) {
+      this.loadOutput();
+    } else {
+      this.output = [];
     }
   },
 
   methods: {
     submitMarkov: function () {
-      Request(this.input, output => {
-        this.output.push(output)
-      })
-    }
+      if(this.input == '') {
+        return;
+      }
+
+      this.request();
+    },
+
+    clearMarkov: function () {
+      this.output = [];
+      this.saveOutput();
+    },
+
+    request: function () {
+      var text = this.input;
+      axios.post(MarkovUrl, {'text': text})
+        .then(response => {
+          this.output.splice(0, 0, response['text']);
+
+          if(this.output.length > 10) {
+            this.output.pop();
+          }
+
+          this.saveOutput();
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+    },
+
+    formatTimestamp: function (ts) {
+      return moment(ts).format('MMMM Do YYYY, h:mm:ss a')
+    },
+
+    saveOutput: function () {
+      localStorage.output = JSON.stringify(this.output);
+    },
+
+    loadOutput: function () {
+      this.output = JSON.parse(localStorage.output);
+    },
   }
 }
 </script>
