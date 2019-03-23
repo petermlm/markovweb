@@ -1,6 +1,6 @@
 .DS_Store
 node_modules
-/dist
+/markov-web/dist
 
 # local env files
 .env.local
