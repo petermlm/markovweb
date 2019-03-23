@@ -54,7 +54,7 @@ import moment from 'moment'
 
 Vue.use(VueMaterial)
 
-let MarkovUrl = 'localhost:5000'
+let MarkovUrl = 'https://localhost:5000'
 
 export default {
   name: 'Markov',
