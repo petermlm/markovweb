@@ -1,5 +1,5 @@
 {
-  "name": "markov",
+  "name": "markov-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,6 +11,7 @@
     "axios": "^0.18.0",
     "moment": "^2.24.0",
     "vue": "^2.6.6",
+    "vue-cli": "^2.9.6",
     "vue-material": "^1.0.0-beta-10.2"
   },
   "devDependencies": {
