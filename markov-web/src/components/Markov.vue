@@ -15,6 +15,11 @@
         <md-button class="md-raised" v-if="output.length" v-on:click="clearMarkov">Clear</md-button>
         <md-button type="submit" class="md-raised md-primary">Submit</md-button>
       </div>
+
+      <md-snackbar :md-position="position" :md-duration="error_duration" :md-active.sync="show_snackbar" md-persistent>
+        <span>{{ error }}</span>
+        <md-button class="md-primary" @click="show_snackbar = false">Close</md-button>
+      </md-snackbar>
     </form>
 
     <md-table id="output-table" v-model="output" v-if="output.length">
@@ -54,7 +59,7 @@ import moment from 'moment'
 
 Vue.use(VueMaterial)
 
-let MarkovUrl = 'https://localhost:5000'
+let MarkovUrl = 'http://localhost:5000'
 
 export default {
   name: 'Markov',
@@ -63,6 +68,11 @@ export default {
     return {
       input: '',
       output: [],
+
+      show_snackbar: false,
+      error: '',
+      position: 'center',
+      error_duration: 2000,
     }
   },
 
@@ -90,19 +100,31 @@ export default {
 
     request: function () {
       var text = this.input;
+
+      if(process.env.NODE_ENV == 'development') {
+        this.handle_response({'text': text, 'timestamp': this.formatTimestamp()});
+        return;
+      }
+
       axios.post(MarkovUrl, {'text': text})
         .then(response => {
-          this.output.splice(0, 0, response['text']);
-
-          if(this.output.length > 10) {
-            this.output.pop();
-          }
-
-          this.saveOutput();
+          var res_text = response['text']
+          this.handle_response(res_text);
         })
-        .catch(e => {
-          this.errors.push(e)
+        .catch(() => {
+          this.show_snackbar = true;
+          this.error = 'No connection.';
         })
+    },
+
+    handle_response: function(res_text) {
+      this.output.splice(0, 0, res_text);
+
+      if(this.output.length > 10) {
+        this.output.pop();
+      }
+
+      this.saveOutput();
     },
 
     formatTimestamp: function (ts) {
