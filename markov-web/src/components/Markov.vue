@@ -102,13 +102,15 @@ export default {
       var text = this.input;
 
       if(process.env.NODE_ENV == 'development') {
-        this.handle_response({'text': text, 'timestamp': this.formatTimestamp()});
+        this.handle_response(text);
         return;
       }
 
       axios.post(MarkovUrl, {'text': text})
         .then(response => {
-          var res_text = response['text']
+          console.log(response);
+          console.log(response['data']);
+          var res_text = response['data']
           this.handle_response(res_text);
         })
         .catch(() => {
@@ -118,7 +120,12 @@ export default {
     },
 
     handle_response: function(res_text) {
-      this.output.splice(0, 0, res_text);
+      var ele = {
+        'text': res_text,
+        'timestamp': this.formatTimestamp()
+      };
+
+      this.output.splice(0, 0, ele);
 
       if(this.output.length > 10) {
         this.output.pop();

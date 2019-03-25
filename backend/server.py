@@ -2,10 +2,12 @@
 
 from flask import Flask, request, abort, render_template
 
+from markov import markov
+
 app = Flask(__name__,
             static_url_path="",
-            static_folder="./markov/dist",
-            template_folder="./markov/dist")
+            static_folder="../markov-web/dist",
+            template_folder="../markov-web/dist")
 
 
 @app.route('/', methods=['GET'])
@@ -19,9 +21,12 @@ def index2():
         print(request.json)
         abort(400)
 
-    text = request.json['text']
-    # Call Markov here
-    return text
+    try:
+        text = request.json['text']
+    except KeyError:
+        return "Bad Request"
+
+    return markov(text)
 
 
 if __name__ == '__main__':
