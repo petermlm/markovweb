@@ -9,5 +9,5 @@ docker run \
     -v $(pwd):/app \
     -u $(id -u):$(id -g) \
     --name markov-web-vue-dev-run \
-    --entrypoint "/app/entrypoint-run.sh" \
+    --entrypoint "/app/entrypoint-build.sh" \
     markov-web-vue-dev

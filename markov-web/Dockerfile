@@ -3,4 +3,5 @@ FROM node:8.10
 RUN mkdir /app
 WORKDIR /app
 
-ENTRYPOINT /app/entrypoint.sh
+RUN useradd -s /bin/bash dockeruser
+USER dockeruser
