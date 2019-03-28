@@ -1,9 +1,9 @@
 <template>
   <div id="PlainText">
-    <h1 id="title">Markov</h1>
+    <h1 id="title">Plain Text</h1>
     <form
       id="markov-form"
-      @submit.prevent="submitMarkov"
+      @submit.prevent="submit"
       action="localhost:5000"
       method="post"
     >
@@ -12,17 +12,17 @@
       </md-field>
 
       <div id="markov-form-buttons">
-        <md-button class="md-raised" v-if="results_lenth" v-on:click="clearMarkov">Clear</md-button>
+        <md-button class="md-raised" v-if="results_lenth" v-on:click="clear">Clear</md-button>
         <md-button type="submit" class="md-raised md-primary">Submit</md-button>
       </div>
-
-      <md-snackbar :md-position="position" :md-duration="error_duration" :md-active.sync="show_snackbar" md-persistent>
-        <span>{{ error }}</span>
-        <md-button class="md-primary" @click="show_snackbar = false">Close</md-button>
-      </md-snackbar>
     </form>
 
     <Results ref="results" res-type="PlainText"/>
+
+    <md-snackbar :md-position="position" :md-duration="error_duration" :md-active.sync="show_snackbar" md-persistent>
+      <span>{{ error }}</span>
+      <md-button class="md-primary" @click="show_snackbar = false">Close</md-button>
+    </md-snackbar>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
 import Results from './Results.vue'
-import { request } from '../requests'
+import { request_plain_text } from '../requests'
 
 Vue.use(VueMaterial)
 
@@ -75,12 +75,12 @@ export default {
   },
 
   methods: {
-    submitMarkov: function () {
+    submit: function () {
       if(this.input == '') {
         return;
       }
 
-      request(this.input)
+      request_plain_text(this.input)
         .then(function (text) {
           this.$refs.results.add(text);
           this.results_lenth = this.$refs.results.count();
@@ -91,7 +91,7 @@ export default {
         }.bind(this));
     },
 
-    clearMarkov: function () {
+    clear: function () {
       this.input = '';
       this.$refs.results.clear();
       this.results_lenth = this.$refs.results.count();
