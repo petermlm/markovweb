@@ -54,12 +54,11 @@ import Vue from 'vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-import axios from 'axios'
 import moment from 'moment'
 
-Vue.use(VueMaterial)
+import { request } from '../requests'
 
-let MarkovUrl = 'http://localhost:5000'
+Vue.use(VueMaterial)
 
 export default {
   name: 'Markov',
@@ -90,33 +89,20 @@ export default {
         return;
       }
 
-      this.request();
+      request(this.input)
+        .then(function (text) {
+          this.handle_response(text);
+        }.bind(this))
+        .catch(function () {
+          this.show_snackbar = true;
+          this.error = 'No connection.';
+        }.bind(this));
     },
 
     clearMarkov: function () {
+      this.input = '';
       this.output = [];
       this.saveOutput();
-    },
-
-    request: function () {
-      var text = this.input;
-
-      if(process.env.NODE_ENV == 'development') {
-        this.handle_response(text);
-        return;
-      }
-
-      axios.post(MarkovUrl, {'text': text})
-        .then(response => {
-          console.log(response);
-          console.log(response['data']);
-          var res_text = response['data']
-          this.handle_response(res_text);
-        })
-        .catch(() => {
-          this.show_snackbar = true;
-          this.error = 'No connection.';
-        })
     },
 
     handle_response: function(res_text) {
