@@ -12,7 +12,7 @@
       </md-field>
 
       <div id="markov-form-buttons">
-        <md-button class="md-raised" v-if="output.length" v-on:click="clearMarkov">Clear</md-button>
+        <md-button class="md-raised" v-if="results_lenth" v-on:click="clearMarkov">Clear</md-button>
         <md-button type="submit" class="md-raised md-primary">Submit</md-button>
       </div>
 
@@ -22,12 +22,7 @@
       </md-snackbar>
     </form>
 
-    <md-table id="output-table" v-model="output" v-if="output.length">
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell class="output-timestamp" md-label="Timestamp">{{ item.timestamp }}</md-table-cell>
-        <md-table-cell md-label="Generated Text">{{ item.text }}</md-table-cell>
-      </md-table-row>
-    </md-table>
+    <Results ref="results" res-type="PlainText"/>
   </div>
 </template>
 
@@ -54,8 +49,8 @@ import Vue from 'vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-import moment from 'moment'
 
+import Results from './Results.vue'
 import { request } from '../requests'
 
 Vue.use(VueMaterial)
@@ -63,23 +58,19 @@ Vue.use(VueMaterial)
 export default {
   name: 'PlainText',
 
+  components: {
+    Results,
+  },
+
   data () {
     return {
       input: '',
-      output: [],
+      results_lenth: 0,
 
       show_snackbar: false,
       error: '',
       position: 'center',
       error_duration: 2000,
-    }
-  },
-
-  mounted () {
-    if(localStorage.output) {
-      this.loadOutput();
-    } else {
-      this.output = [];
     }
   },
 
@@ -91,7 +82,8 @@ export default {
 
       request(this.input)
         .then(function (text) {
-          this.handle_response(text);
+          this.$refs.results.add(text);
+          this.results_lenth = this.$refs.results.count();
         }.bind(this))
         .catch(function () {
           this.show_snackbar = true;
@@ -101,35 +93,8 @@ export default {
 
     clearMarkov: function () {
       this.input = '';
-      this.output = [];
-      this.saveOutput();
-    },
-
-    handle_response: function(res_text) {
-      var ele = {
-        'text': res_text,
-        'timestamp': this.formatTimestamp()
-      };
-
-      this.output.splice(0, 0, ele);
-
-      if(this.output.length > 10) {
-        this.output.pop();
-      }
-
-      this.saveOutput();
-    },
-
-    formatTimestamp: function (ts) {
-      return moment(ts).format('MMMM Do YYYY, h:mm:ss a')
-    },
-
-    saveOutput: function () {
-      localStorage.output = JSON.stringify(this.output);
-    },
-
-    loadOutput: function () {
-      this.output = JSON.parse(localStorage.output);
+      this.$refs.results.clear();
+      this.results_lenth = this.$refs.results.count();
     },
   }
 }
