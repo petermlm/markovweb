@@ -4,7 +4,7 @@
     <form
       id="markov-form"
       @submit.prevent="submit"
-      action="localhost:5000"
+      action="localhost:5000/Reddit"
       method="post"
     >
       <md-field id="input">
