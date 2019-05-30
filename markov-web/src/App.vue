@@ -1,16 +1,22 @@
 <template>
   <div id="app">
+    <Header/>
     <Markov/>
+    <Footer/>
   </div>
 </template>
 
 <script>
+import Header from './components/Header.vue'
 import Markov from './components/Markov.vue'
+import Footer from './components/Footer.vue'
 
 export default {
   name: 'app',
   components: {
-    Markov
+    Header,
+    Markov,
+    Footer
   }
 }
 </script>
@@ -25,6 +31,6 @@ export default {
 
   max-width: 1100px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 0px 16px 16px 16px;
 }
 </style>
