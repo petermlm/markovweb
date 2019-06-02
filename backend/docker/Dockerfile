@@ -16,6 +16,3 @@ ADD markov-web/dist /app/markov-web/dist
 # Prepare directory for development
 ADD backend /app/backend
 WORKDIR /app/backend
-
-# Run
-ENTRYPOINT /app/backend/entrypoint.sh
