@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request, abort, render_template
+from flask import Flask, request, abort, render_template, Response
+from flask_cors import CORS, cross_origin
 
+import config
 import reddit
 from markov import markov
 
@@ -9,11 +11,18 @@ app = Flask(__name__,
             static_url_path="",
             static_folder="../markov-web/dist",
             template_folder="../markov-web/dist")
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template("index.html")
+    env = config.get_env()
+    if env == config.ENV_PROD:
+        return render_template("index.html")
+    else:
+        res = Response("In development, port is 8080")
+        res.headers['Access-Control-Allow-Origin'] = '*'
+        return res
 
 
 @app.route('/plain_text', methods=['POST'])

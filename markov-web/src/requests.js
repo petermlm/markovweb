@@ -5,10 +5,10 @@ let MarkovUrlReddit = 'http://localhost:5000/reddit'
 
 export function request_plain_text (text) {
   return new Promise (function (resolve, reject) {
-    if(process.env.NODE_ENV == 'development') {
-      resolve(text);
-      return;
-    }
+    // if(process.env.NODE_ENV == 'development') {
+    //   resolve(text);
+    //   return;
+    // }
 
     axios.post(MarkovUrlPlainText, {'text': text})
       .then(response => {
