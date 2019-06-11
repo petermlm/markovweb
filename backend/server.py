@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, abort, render_template, Response
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 import config
 import reddit
@@ -11,7 +11,10 @@ app = Flask(__name__,
             static_url_path="",
             static_folder="../markov-web/dist",
             template_folder="../markov-web/dist")
-CORS(app, resources={r"/*": {"origins": "*"}})
+
+if config.get_env() == config.ENV_DEV:
+    app.config['CORS_HEADERS'] = 'Content-Type'
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 @app.route('/', methods=['GET'])
