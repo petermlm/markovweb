@@ -8,10 +8,14 @@ services:
             - "5000:5000"
         volumes:
             - ./backend:/app/backend
-        entrypoint: python3 server.py
-        user: "${UID}:${GID}"
         environment:
+            FLASK_APP: server.py
+            FLASK_DEBUG: 1
+            LC_ALL: C.UTF-8
+            LANG: C.UTF-8
             ENV: DEV
+        entrypoint: flask run --host=0.0.0.0
+        user: "${UID}:${GID}"
     frontend:
         build:
             context: ./markov-web
