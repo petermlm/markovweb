@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t markov-web -f Dockerfile ../..
+docker build -t markov-web-backend-test -f Dockerfile ../..
