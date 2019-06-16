@@ -4,7 +4,6 @@
     <form
       id="markov-form"
       @submit.prevent="submit"
-      action="localhost:5000/PlainText"
       method="post"
     >
       <md-field>
