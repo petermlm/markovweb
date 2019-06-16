@@ -89,3 +89,31 @@ class BadRequests(CommonMixin, TestCase):
 
     def test_post_reddit_bad_json(self):
         self._post_bad_json('/reddit')
+
+    def test_post_plain_text_no_input(self):
+        input_text = ''
+        ret = self.app.post('/plain_text',
+                            data=json.dumps({'text': input_text}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)
+
+    def test_post_plain_text_too_long(self):
+        input_text = 'a' * 10001
+        ret = self.app.post('/plain_text',
+                            data=json.dumps({'text': input_text}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)
+
+    def test_post_reddit_no_input(self):
+        input_text = ''
+        ret = self.app.post('/reddit',
+                            data=json.dumps({'username': input_text}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)
+
+    def test_post_reddit_too_long(self):
+        input_text = 'a' * 20
+        ret = self.app.post('/reddit',
+                            data=json.dumps({'username': input_text}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)

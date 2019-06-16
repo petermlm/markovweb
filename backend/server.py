@@ -38,6 +38,11 @@ def request_plain_text():
     except KeyError:
         return "Bad Request"
 
+    input_size = len(text)
+
+    if input_size == 0 or input_size >= config.PlainTextMaxInput:
+        abort(400)
+
     return markov(text)
 
 
@@ -50,6 +55,11 @@ def request_reddit():
         username = request.json['username']
     except KeyError:
         return "Bad Request"
+
+    input_size = len(username)
+
+    if input_size == 0 or input_size >= config.RedditMaxInput:
+        abort(400)
 
     comments_text = reddit.get_comments_text(username)
     return markov(comments_text)
