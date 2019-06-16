@@ -19,10 +19,10 @@ services:
     frontend:
         build:
             context: ./markov-web
-            dockerfile: ./Dockerfile
+            dockerfile: ./docker/Dockerfile
         ports:
             - "8080:8080"
         volumes:
             - ./markov-web:/app
-        entrypoint: /app/entrypoint-run.sh
+        entrypoint: /app/docker/entrypoint-run.sh
         user: "${UID}:${GID}"
