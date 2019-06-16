@@ -9,10 +9,9 @@ RUN mkdir /pip_packages
 ADD backend/requirements.txt /pip_packages/requirements.txt
 RUN cd /pip_packages && pip3 install -r requirements.txt
 
-# Prepare frontend
-RUN mkdir -p /app/markov-web
-ADD markov-web/dist /app/markov-web/dist
+# Create user
+RUN useradd -s /bin/bash dockeruser
+USER dockeruser
 
 # Prepare directory for development
-ADD backend /app/backend
 WORKDIR /app/backend

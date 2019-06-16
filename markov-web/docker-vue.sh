@@ -2,5 +2,5 @@
 
 docker exec \
     -it \
-    markov-web-vue-dev-run \
+    markovweb_frontend_1 \
     /app/node_modules/vue-cli/bin/vue $@
