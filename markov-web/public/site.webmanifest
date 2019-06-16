@@ -1,0 +1,21 @@
+{
+  "name": "Markov - Pedro Melgueira",
+  "short_name": "Markov - Pedro Melgueira",
+  "start_url": "/markov",
+  "display": "standalone",
+  "description": "A tool to work with Markov chain text generation.",
+  "theme_color": "#ffffff",
+  "background_color": "#fafafa",
+  "icons": [
+    {
+      "sizes": "192x192",
+      "src": "/media/android-chrome-192x192.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "/media/android-chrome-512x512.png",
+      "type": "image/png"
+    }
+  ]
+}
