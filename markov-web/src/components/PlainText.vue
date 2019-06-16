@@ -7,7 +7,7 @@
       method="post"
     >
       <md-field>
-        <md-textarea v-model="input" maxlength="5000"></md-textarea>
+        <md-textarea v-model="input" maxlength="10000"></md-textarea>
       </md-field>
 
       <div id="markov-form-buttons">

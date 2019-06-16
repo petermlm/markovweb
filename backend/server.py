@@ -36,7 +36,7 @@ def request_plain_text():
     try:
         text = request.json['text']
     except KeyError:
-        return "Bad Request"
+        abort(400)
 
     input_size = len(text)
 
@@ -54,7 +54,7 @@ def request_reddit():
     try:
         username = request.json['username']
     except KeyError:
-        return "Bad Request"
+        abort(400)
 
     input_size = len(username)
 
