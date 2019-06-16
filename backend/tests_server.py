@@ -28,33 +28,35 @@ class GoodRequests(CommonMixin, TestCase):
     @patch('server.markov')
     def test_post_plain_text(self, markov_mock):
         input_text = 'This is the text for input'
+        output_size = 100
         markov_mock.return_value = input_text
 
         ret = self.app.post('/plain_text',
-                            data=json.dumps({'text': input_text}),
+                            data=json.dumps({'text': input_text, 'output_size': output_size}),
                             content_type='application/json')
 
         self.assertEqual(ret.status_code, 200)
         self.assertEqual(str(ret.data, 'utf-8'), input_text)
-        markov_mock.assert_called_once_with(input_text)
+        markov_mock.assert_called_once_with(input_text, words_num=output_size)
 
     @patch('server.reddit.get_comments_text')
     @patch('server.markov')
     def test_post_reddit(self, markov_mock, reddit_mock):
         username = 'user'
+        output_size = 100
         reddit_output = 'reddit_output'
         markov_output = 'markov_output'
         reddit_mock.return_value = reddit_output
         markov_mock.return_value = markov_output
 
         ret = self.app.post('/reddit',
-                            data=json.dumps({'username': username}),
+                            data=json.dumps({'username': username, 'output_size': output_size}),
                             content_type='application/json')
 
         self.assertEqual(ret.status_code, 200)
         self.assertEqual(str(ret.data, 'utf-8'), markov_output)
         reddit_mock.assert_called_once_with(username)
-        markov_mock.assert_called_once_with(reddit_output)
+        markov_mock.assert_called_once_with(reddit_output, words_num=output_size)
 
 
 class BadRequests(CommonMixin, TestCase):
@@ -69,6 +71,12 @@ class BadRequests(CommonMixin, TestCase):
     def _post_bad_json(self, endpoint):
         ret = self.app.post(endpoint,
                             data=json.dumps({'bad': 'json'}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)
+
+    def _post_missing_input(self, endpoint):
+        ret = self.app.post(endpoint,
+                            data=json.dumps({'output_size': 100}),
                             content_type='application/json')
         self.assertEqual(ret.status_code, 400)
 
@@ -115,5 +123,19 @@ class BadRequests(CommonMixin, TestCase):
         input_text = 'a' * 20
         ret = self.app.post('/reddit',
                             data=json.dumps({'username': input_text}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)
+
+    def test_post_plain_text_missing_output_size(self):
+        input_text = 'This is the text for input'
+        ret = self.app.post('/plain_text',
+                            data=json.dumps({'text': input_text}),
+                            content_type='application/json')
+        self.assertEqual(ret.status_code, 400)
+
+    def test_post_reddit_missing_output_size(self):
+        username = 'user'
+        ret = self.app.post('/plain_text',
+                            data=json.dumps({'username': username}),
                             content_type='application/json')
         self.assertEqual(ret.status_code, 400)

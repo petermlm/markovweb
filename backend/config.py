@@ -11,3 +11,5 @@ def get_env():
 
 PlainTextMaxInput = 10000
 RedditMaxInput = 20
+
+OutputSizeMax = 500

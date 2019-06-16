@@ -30,39 +30,51 @@ def index():
 
 @app.route('/plain_text', methods=['POST'])
 def request_plain_text():
-    if not request.json or 'text' not in request.json:
+    if not request.json or 'text' not in request.json or 'output_size' not in request.json:
         abort(400)
 
     try:
         text = request.json['text']
+        output_size = request.json['output_size']
     except KeyError:
         abort(400)
 
     input_size = len(text)
 
-    if input_size == 0 or input_size >= config.PlainTextMaxInput:
+    if input_size_valid(input_size, config.PlainTextMaxInput) or \
+            output_size_valid(output_size):
         abort(400)
 
-    return markov(text)
+    return markov(text, words_num=output_size)
 
 
 @app.route('/reddit', methods=['POST'])
 def request_reddit():
-    if not request.json or 'username' not in request.json:
+    if not request.json or 'username' not in request.json or 'output_size' not in request.json:
         abort(400)
 
     try:
         username = request.json['username']
+        output_size = request.json['output_size']
     except KeyError:
         abort(400)
 
     input_size = len(username)
 
-    if input_size == 0 or input_size >= config.RedditMaxInput:
+    if input_size_valid(input_size, config.RedditMaxInput) or \
+            output_size_valid(output_size):
         abort(400)
 
     comments_text = reddit.get_comments_text(username)
-    return markov(comments_text)
+    return markov(comments_text, words_num=output_size)
+
+
+def input_size_valid(input_size, max):
+    return 0 > input_size >= max
+
+
+def output_size_valid(output_size):
+    return 0 > output_size >= config.OutputSizeMax
 
 
 if __name__ == '__main__':

@@ -10,6 +10,8 @@
         <md-textarea v-model="input" maxlength="10000"></md-textarea>
       </md-field>
 
+      <OutputSize ref="OutputSize"/>
+
       <div id="markov-form-buttons">
         <md-button class="md-raised" v-if="results_lenth" v-on:click="clear">Clear</md-button>
         <md-button type="submit" class="md-raised md-primary">Submit</md-button>
@@ -49,6 +51,7 @@ import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
+import OutputSize from './OutputSize.vue'
 import Results from './Results.vue'
 import { request_plain_text } from '../requests'
 
@@ -58,6 +61,7 @@ export default {
   name: 'PlainText',
 
   components: {
+    OutputSize,
     Results,
   },
 
@@ -79,7 +83,9 @@ export default {
         return;
       }
 
-      request_plain_text(this.input)
+      var output_size = this.$refs.OutputSize.get_size();
+
+      request_plain_text(this.input, output_size)
         .then(function (text) {
           this.$refs.results.add(text);
           this.results_lenth = this.$refs.results.count();
