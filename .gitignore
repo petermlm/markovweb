@@ -1,9 +1,8 @@
+*.swp
 .DS_Store
 node_modules
-__pycache__
 
 # env files and directories
-env
 .env.local
 .env.*.local
 
@@ -14,12 +13,3 @@ dist
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw*
