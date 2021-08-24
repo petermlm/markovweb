@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Header/>
+    <Markov/>
+    <Footer/>
   </div>
 </template>
 
