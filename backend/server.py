@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request, abort, render_template, Response
+from flask import request, abort, render_template, Response
 from flask_cors import CORS
 from markov import markov
 
+from app import make_app
 import config
 import reddit
 
-app = Flask(__name__,
-            static_url_path="",
-            static_folder="../markov-web/dist",
-            template_folder="../markov-web/dist")
+app = make_app()
 
 if config.get_env() == config.ENV_DEV:
     app.config['CORS_HEADERS'] = 'Content-Type'
