@@ -1,7 +1,6 @@
-FROM node:8.10
+FROM node:16.7.0-alpine3.14
 
 RUN mkdir /app
 WORKDIR /app
 
-RUN useradd -s /bin/bash dockeruser
-USER dockeruser
+ENTRYPOINT ["sh", "docker/entrypoint.sh"]
