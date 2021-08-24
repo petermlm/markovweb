@@ -1,11 +1,14 @@
 .DS_Store
 node_modules
 __pycache__
-/markov-web/dist
 
-# local env files
+# env files and directories
+env
 .env.local
 .env.*.local
+
+# Compilation output
+dist
 
 # Log files
 npm-debug.log*

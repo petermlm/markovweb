@@ -1,17 +1,10 @@
-FROM ubuntu:18.04
+FROM python:3.9
 
-# System Packages
-RUN apt update --fix-missing && \
-    apt -qq -y install python3 python3-pip git vim
+WORKDIR /app
 
-# Python packages
-RUN mkdir /pip_packages
-ADD backend/requirements.txt /pip_packages/requirements.txt
-RUN cd /pip_packages && pip3 install -r requirements.txt
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Create user
-RUN useradd -s /bin/bash dockeruser
-USER dockeruser
+COPY backend .
 
-# Prepare directory for development
-WORKDIR /app/backend
+CMD ["python", "server.py"]

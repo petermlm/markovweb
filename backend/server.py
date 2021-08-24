@@ -2,10 +2,10 @@
 
 from flask import Flask, request, abort, render_template, Response
 from flask_cors import CORS
+from markov import markov
 
 import config
 import reddit
-from markov import markov
 
 app = Flask(__name__,
             static_url_path="",

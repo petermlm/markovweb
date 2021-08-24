@@ -3,4 +3,4 @@ flask-cors==1.8.0
 gunicorn==19.9.0
 requests==2.18.4
 
--e git://github.com/petermlm/Markov.git@v1.0#egg=markov
+git+https://github.com/petermlm/Markov.git@v1.3#egg=Markov
