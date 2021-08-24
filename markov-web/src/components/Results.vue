@@ -32,37 +32,37 @@ export default {
       output: [],
 
       error: '',
-      error_duration: 2000,
+      error_duration: 2000
     }
   },
 
   mounted () {
-    if(store.get(this.storeKey())) {
-      this.loadOutput();
+    if (store.get(this.storeKey())) {
+      this.loadOutput()
     } else {
-      this.output = [];
+      this.output = []
     }
   },
 
   methods: {
-    add: function (res_text) {
+    add: function (resText) {
       var ele = {
-        'text': res_text,
+        'text': resText,
         'timestamp': this.formatTimestamp()
-      };
-
-      this.output.splice(0, 0, ele);
-
-      if(this.output.length > 10) {
-        this.output.pop();
       }
 
-      this.saveOutput();
+      this.output.splice(0, 0, ele)
+
+      if (this.output.length > 10) {
+        this.output.pop()
+      }
+
+      this.saveOutput()
     },
 
     clear: function () {
-      this.output = [];
-      this.saveOutput();
+      this.output = []
+      this.saveOutput()
     },
 
     formatTimestamp: function () {
@@ -70,19 +70,19 @@ export default {
     },
 
     saveOutput: function () {
-      store.set(this.storeKey(), JSON.stringify(this.output));
+      store.set(this.storeKey(), JSON.stringify(this.output))
     },
 
     loadOutput: function () {
-      this.output = JSON.parse(store.get(this.storeKey()));
+      this.output = JSON.parse(store.get(this.storeKey()))
     },
 
     storeKey: function () {
-      return 'results-' + this.resType;
+      return 'results-' + this.resType
     },
 
     count: function () {
-      return this.output.length;
+      return this.output.length
     }
   }
 }

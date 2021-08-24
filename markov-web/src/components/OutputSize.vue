@@ -26,7 +26,7 @@ export default {
 
   methods: {
     get_size: function () {
-      return Number(this.output_size);
+      return Number(this.output_size)
     }
   }
 }

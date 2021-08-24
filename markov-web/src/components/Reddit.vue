@@ -46,7 +46,7 @@ import 'vue-material/dist/theme/default.css'
 
 import OutputSize from './OutputSize.vue'
 import Results from './Results.vue'
-import { request_reddit } from '../requests'
+import { requestReddit } from '../requests'
 
 Vue.use(VueMaterial)
 
@@ -55,7 +55,7 @@ export default {
 
   components: {
     OutputSize,
-    Results,
+    Results
   },
 
   data () {
@@ -66,34 +66,34 @@ export default {
       show_snackbar: false,
       error: '',
       position: 'center',
-      error_duration: 2000,
+      error_duration: 2000
     }
   },
 
   methods: {
     submit: function () {
-      if(this.input == '') {
-        return;
+      if (this.input === '') {
+        return
       }
 
-      var output_size = this.$refs.OutputSize.get_size();
+      var outputSize = this.$refs.OutputSize.get_size()
 
-      request_reddit(this.input, output_size)
+      requestReddit(this.input, outputSize)
         .then(function (text) {
-          this.$refs.results.add(text);
-          this.results_lenth = this.$refs.results.count();
+          this.$refs.results.add(text)
+          this.results_lenth = this.$refs.results.count()
         }.bind(this))
         .catch(function () {
-          this.show_snackbar = true;
-          this.error = 'No connection.';
-        }.bind(this));
+          this.show_snackbar = true
+          this.error = 'No connection.'
+        }.bind(this))
     },
 
     clear: function () {
-      this.input = '';
-      this.$refs.results.clear();
-      this.results_lenth = this.$refs.results.count();
-    },
+      this.input = ''
+      this.$refs.results.clear()
+      this.results_lenth = this.$refs.results.count()
+    }
   }
 }
 </script>

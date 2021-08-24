@@ -26,7 +26,7 @@ export default {
   name: 'Markov',
   components: {
     PlainText,
-    Reddit,
+    Reddit
   }
 }
 </script>

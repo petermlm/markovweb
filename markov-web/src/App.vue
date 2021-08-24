@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <Header/>
-    <Markov/>
-    <Footer/>
+    <router-view/>
   </div>
 </template>
 
@@ -12,7 +10,7 @@ import Markov from './components/Markov.vue'
 import Footer from './components/Footer.vue'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     Header,
     Markov,
