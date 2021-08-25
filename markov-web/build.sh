@@ -13,5 +13,4 @@ docker run \
     -v $(pwd):/app \
     -u $(id -u):$(id -g) \
     --name markov-web-frontend-build-run \
-    --env NODE_ENV=production \
     markov-web-frontend-build
