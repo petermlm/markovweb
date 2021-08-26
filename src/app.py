@@ -4,8 +4,9 @@ import config
 
 
 def make_app():
+    # The are the same right now, but may be different in the future
     if config.get_env() == config.ENV_PROD:
-        static_url_path = "/markov/static"
+        static_url_path = "/static"
     else:
         static_url_path = "/static"
 

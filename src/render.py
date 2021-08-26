@@ -4,9 +4,10 @@ import config
 
 
 def render(template):
-    if config.get_env() == config.ENV_PROD:
+    env = config.get_env()
+    if env == config.ENV_PROD:
         base_url = "/markov"
     else:
         base_url = ""
 
-    return render_template(template, base_url=base_url)
+    return render_template(template, env=env, base_url=base_url)

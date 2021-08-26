@@ -2,6 +2,13 @@ const PLAIN_TEXT = 0;
 const REDDIT = 1;
 var Current = {};
 
+function make_url(url) {
+  if(ENV == "PROD") {
+    return BASE_URL + url;
+  }
+  return url;
+}
+
 function hide(element) {
   element.classList.add('hide');
 }
@@ -28,7 +35,7 @@ function format_timestamp(ts) {
 
 function plain_text_submit(event) {
   event.preventDefault();
-  var url = '/plain_text';
+  var url = make_url('/plain_text');
   var data = {
     'text': Current['text'].value,
     'output_size': parseInt(Current['output_size'].value, 10),
@@ -38,7 +45,7 @@ function plain_text_submit(event) {
 
 function reddit_submit(event) {
   event.preventDefault();
-  var url = '/reddit';
+  var url = make_url('/reddit');
   var data = {
     'username': Current['text'].value,
     'output_size': parseInt(Current['output_size'].value, 10),
