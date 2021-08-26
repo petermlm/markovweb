@@ -1,0 +1,17 @@
+body {
+  background-color: #fafafa !important;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.header {
+  text-decoration: none;
+  color: #448aff;
+}
+
+.footer {
+  color: #5a5a5a;
+  font-size: smaller;
+  margin-top: 32px;
+  text-align: center;
+}

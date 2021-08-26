@@ -17,17 +17,11 @@ if config.get_env() == config.ENV_DEV:
 
 @app.route('/', methods=['GET'])
 def index():
-    env = config.get_env()
-    if env == config.ENV_PROD:
-        return render_template("index.html")
-    else:
-        res = Response("In development, port is 8080")
-        res.headers['Access-Control-Allow-Origin'] = '*'
-        return res
+    return render_template('plain_text.html')
 
 
 @app.route('/plain_text', methods=['POST'])
-def request_plain_text():
+def plain_text_post():
     if not request.json or 'text' not in request.json or 'output_size' not in request.json:
         abort(400)
 
@@ -46,8 +40,13 @@ def request_plain_text():
     return markov(text, words_num=output_size)
 
 
+@app.route('/reddit', methods=['GET'])
+def reddit_get():
+    return render_template('reddit.html')
+
+
 @app.route('/reddit', methods=['POST'])
-def request_reddit():
+def reddit_post():
     if not request.json or 'username' not in request.json or 'output_size' not in request.json:
         abort(400)
 
