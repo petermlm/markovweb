@@ -14,6 +14,5 @@ docker run \
     -d \
     -p $PORT:5000 \
     -e ENV=PROD \
-    -v $(pwd)/src:/app \
     --name markov-web-deploy-run \
     markov-web-deploy
