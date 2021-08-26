@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-from flask import request, abort, render_template, Response
+from flask import request, abort
 from flask_cors import CORS
 from markov import markov
 
 from app import make_app
+from render import render
 import config
 import reddit
 
@@ -17,7 +18,7 @@ if config.get_env() == config.ENV_DEV:
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('plain_text.html')
+    return render('plain_text.html')
 
 
 @app.route('/plain_text', methods=['POST'])
@@ -42,7 +43,7 @@ def plain_text_post():
 
 @app.route('/reddit', methods=['GET'])
 def reddit_get():
-    return render_template('reddit.html')
+    return render('reddit.html')
 
 
 @app.route('/reddit', methods=['POST'])
