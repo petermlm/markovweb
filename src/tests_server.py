@@ -15,15 +15,10 @@ class CommonMixin:
 
 class GoodRequests(CommonMixin, TestCase):
     @patch('server.render_template')
-    @patch('config.get_env')
-    def test_get_index(self, get_env_mock, render_template_mock):
-        get_env_mock.return_value = config.ENV_PROD
+    def test_get_index(self, render_template_mock):
         render_template_mock.return_value = ''
-
         self.app.get('/')
-
-        get_env_mock.assert_called_once_with()
-        render_template_mock.assert_called_once_with('index.html')
+        render_template_mock.assert_called_once_with('plain_text.html')
 
     @patch('server.markov')
     def test_post_plain_text(self, markov_mock):
@@ -80,17 +75,11 @@ class BadRequests(CommonMixin, TestCase):
                             content_type='application/json')
         self.assertEqual(ret.status_code, 400)
 
-    def test_post_plain_text_get(self):
-        self._post_get('/plain_text')
-
     def test_post_plain_text_not_json(self):
         self._post_not_json('/plain_text')
 
     def test_post_plain_text_bad_json(self):
         self._post_bad_json('/plain_text')
-
-    def test_post_reddit_get(self):
-        self._post_get('/reddit')
 
     def test_post_reddit_not_json(self):
         self._post_not_json('/reddit')
