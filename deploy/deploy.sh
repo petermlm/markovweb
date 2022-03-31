@@ -2,6 +2,11 @@
 
 PORT=$1
 
+if [ -z $1 ]; then
+    echo "Port is needed!"
+    exit 1
+fi
+
 # Run from source directory
 cd ../src
 
