@@ -3,7 +3,6 @@ import json
 from unittest import TestCase
 from unittest.mock import patch
 
-import config
 import server
 
 
@@ -14,11 +13,11 @@ class CommonMixin:
 
 
 class GoodRequests(CommonMixin, TestCase):
-    @patch('server.render_template')
-    def test_get_index(self, render_template_mock):
-        render_template_mock.return_value = ''
+    @patch('server.render')
+    def test_get_index(self, render_mock):
+        render_mock.return_value = ''
         self.app.get('/')
-        render_template_mock.assert_called_once_with('plain_text.html')
+        render_mock.assert_called_once_with('plain_text.html')
 
     @patch('server.markov')
     def test_post_plain_text(self, markov_mock):
